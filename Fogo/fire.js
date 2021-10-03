@@ -10,7 +10,7 @@ function start() {
     createFireSource()
     renderFire()
 
-    setInterval(calculateFirePropagation,  1000)
+    setInterval(calculateFirePropagation,  50)
 }
 
 function createFireDataStructure(){
@@ -37,18 +37,18 @@ function updateFireIntensityPerPixel(currentPixelIndex) {
     if (bellowPixelIndex >= fireWidth * fireHeight){
         return
     }
-    const decay = 1
+    const decay = Math.floor(Math.random() * 3)
     const belowPixelFireIntensity = firePixelsArray[bellowPixelIndex]
     const newFireIntensity = belowPixelFireIntensity - decay
         belowPixelFireIntensity - decay >= 0 ? belowPixelFireIntensity - decay : 0
 
-    firePixelsArray[currentPixelIndex] = newFireIntensity
+    firePixelsArray[currentPixelIndex - decay] = newFireIntensity
 }
 
 
 function renderFire(){
     const debug = false
-    
+
     let html = '<table cellpadding=0 cellspacing=0>'
     for (let row = 0; row < fireHeight; row++) {
         html += '<tr>'
@@ -66,7 +66,7 @@ function renderFire(){
             else {
                 const color = fireColorsPalette[fireIntensity]
                 const colorString = `${color.r}, ${color.g}, ${color.b}`
-                html += `<td style="background-color: rgb(${colorString})">`
+                html += `<td class="pixel" style="background-color: rgb(${colorString})">`
                 html += '</td>'
             }
             
